@@ -68,6 +68,51 @@ class HandelDB
         }
 		$this->disconectFromDB();
 	}
+
+	public function getJSON($circle_id){
+		try {
+			$this-> connectToDB();
+			$stmt =  $this->conn->prepare('
+				SELECT collection_calendar.collection_date AS collection_date, collection_calendar.garbage_type_id AS garbage_type_id, garbage_type_description
+				FROM collection_calendar
+                JOIN garbage_type using(garbage_type_id)
+				WHERE
+					DATE_ADD( collection_calendar.collection_date, INTERVAL -6 HOUR) < DATE_ADD( now(), INTERVAL 9 HOUR)
+				and
+					DATE_ADD( collection_calendar.collection_date, INTERVAL 7 HOUR) > DATE_ADD( now(), INTERVAL 9 HOUR)
+				and 
+					circle_id = :circle_id
+				ORDER BY collection_date
+                LIMIT 1
+				'); 
+			$stmt->bindParam(':circle_id',			$circle_id,			PDO::PARAM_INT);
+			$stmt->execute(); 
+			return json_encode($stmt->fetchAll(PDO::FETCH_ASSOC)); 
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+		$this->disconectFromDB();
+	}
+
+	public function getTestData($circle_id){
+		try {
+			$this-> connectToDB();
+			$stmt =  $this->conn->prepare('
+				SELECT collection_calendar.collection_date AS collection_date, collection_calendar.garbage_type_id AS garbage_type_id, garbage_type_description
+				FROM collection_calendar
+                JOIN garbage_type using(garbage_type_id)
+				WHERE circle_id = :circle_id
+				ORDER BY collection_date
+                LIMIT 1
+				'); 
+			$stmt->bindParam(':circle_id',			$circle_id,			PDO::PARAM_INT);
+			$stmt->execute(); 
+			return json_encode($stmt->fetchAll(PDO::FETCH_ASSOC)); 
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        } 
+		$this->disconectFromDB();
+	}
 }
 
 $DB = new HandelDB;
