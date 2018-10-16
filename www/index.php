@@ -36,19 +36,8 @@
 	  <h2>Next 30 Dates</h2>
 
 <?php
-    $result = $DB->getResults("
-		SELECT
-      collection_calendar.circle_id AS circle_id,
-      collection_date,
-      garbage_type_description,
-      circle_description
-    FROM `collection_calendar`
-		LEFT JOIN circle on circle.circle_id = collection_calendar.circle_id
-		LEFT JOIN garbage_type ON garbage_type.garbage_type_id = collection_calendar.garbage_type_id
-		WHERE collection_calendar.collection_date >= DATE(DATE_ADD( NOW(), INTERVAL 9 HOUR))
-		ORDER BY ID
-		LIMIT 30
-	");
+
+    $result = $DB->getCalendarEntries();
 
    //echo print_r($result);
     $html = '<table class="result">';
@@ -58,19 +47,16 @@
     $html .='</tr>';
 
     // data rows
-foreach ($result as $key => $value) {
-    $html .= '<tr>';
-    $html .= '<td>' . htmlspecialchars($result[$key]['collection_date']). '</td>';
-    $html .= '<td>' . htmlspecialchars($result[$key]['garbage_type_description']). '</td>';
-    $html .= '<td><span title="circle_id '.htmlspecialchars($result[$key]['circle_id']).'">'. htmlspecialchars($result[$key]['circle_description']). '</span></td>';
-    $html .= '</tr>';
-}
-
+    foreach ($result as $key => $value) {
+        $html .= '<tr>';
+        $html .= '<td>' . htmlspecialchars($result[$key]['collection_date']). '</td>';
+        $html .= '<td>' . htmlspecialchars($result[$key]['garbage_type_description']). '</td>';
+        $html .= '<td><span title="circle_id '.htmlspecialchars($result[$key]['circle_id']).'">'. htmlspecialchars($result[$key]['circle_description']). '</span></td>';
+        $html .= '</tr>';
+    }
     // finish table and return it
-
     $html .= '</table>';
     echo $html;
-
 ?>
 </body>
 </html>
