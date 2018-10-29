@@ -35,8 +35,7 @@
       <h1>Collection Calendar</h1>
 	  <h2>Next 30 Dates</h2>
 
-<?php
-
+<?php 
     $result = $DB->getCalendarEntries();
 
    //echo print_r($result);

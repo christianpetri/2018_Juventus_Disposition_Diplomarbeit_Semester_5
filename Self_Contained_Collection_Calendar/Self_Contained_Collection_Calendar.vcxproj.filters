@@ -29,5 +29,8 @@
     <ClCompile Include="Calendar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="psydoCode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
