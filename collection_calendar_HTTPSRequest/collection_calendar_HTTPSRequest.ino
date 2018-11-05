@@ -19,14 +19,24 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 
-#define USE_SERIAL Serial
+//#define DEBUG; //comment out to disable Serial prints
+
+#ifdef DEBUG 
+ #define DEBUG_PRINT(x)       Serial.print    (x)
+ #define DEBUG_PRINTDEC(x)    Serial.print    (x, DEC)
+ #define DEBUG_PRINTLN(x)     Serial.println  (x)
+#else
+ #define DEBUG_PRINT(x)
+ #define DEBUG_PRINTDEC(x)
+ #define DEBUG_PRINTLN(x) 
+#endif
 
 const char* ssid = "CP";
 const char* password = "ChristianPetri1988";
 
 const char* host = "www.collectioncalendar.christianpetri.ch";
 const int httpsPort = 443;
-String url = "/plaintext/?circle_id=5";
+String url = "/plaintext/?circle_id=5"; 
 
 // Use web browser to view and copy
 // SHA1 fingerprint of the certificate
@@ -34,7 +44,8 @@ String url = "/plaintext/?circle_id=5";
 const char* fingerprint = "da c9 02 4f 54 d8 f6 df 94 93 5f b1 73 26 38 ca 6a d7 7c 13"; //root certificate --> until 2021
 
 //Setup LED
-const int led[5] = {D8, D0, D5, D6, D7}; 
+const int ledPin[5] = {D8, D0, D5, D6, D7}; 
+const int connectedToApiStatusLedPin = LED_BUILTIN; //on = successful off=not connected
 
 // Generally, you should use "unsigned long" for variables that hold time
 // The value will quickly become too large for an int to store
@@ -43,124 +54,140 @@ unsigned long previousMillis = 60000;        // will store last time LED was upd
 // constants won't change:
 const long interval = 60000;           // interval at which to blink (milliseconds) --> 60000 ms = 1 minute
 
-//notAbleToConnectToTheAPI Code
-int notAbleToConnectToTheAPI = 0;
-
 void setup() {
   // set the digital pin as output: 
-  for(int i = 0; i < 5; i++){
-    pinMode(led[i], OUTPUT); 
+  for(int i = 0; i < (sizeof(ledPin)/sizeof(int)); i++){
+    pinMode(ledPin[i], OUTPUT); 
   }
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN,LOW); 
-  USE_USE_SERIAL.begin(115200);
-  USE_SERIAL.println();
-  USE_SERIAL.print("connecting to ");
-  USE_SERIAL.println(ssid);
+  pinMode(connectedToApiStatusLedPin, OUTPUT);
+  digitalWrite(connectedToApiStatusLedPin,LOW); 
+  #ifdef DEBUG
+    Serial.begin(115200);
+  #endif
+  DEBUG_PRINTLN();
+  DEBUG_PRINT("connecting to ");
+  DEBUG_PRINTLN(ssid);
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    USE_SERIAL.print(".");
+    DEBUG_PRINT(".");
   }
-  USE_SERIAL.println("");
-  USE_SERIAL.println("WiFi connected");
-  USE_SERIAL.println("IP address: ");
-  USE_SERIAL.println(WiFi.localIP());
+  DEBUG_PRINTLN("");
+  DEBUG_PRINTLN("WiFi connected");
+  DEBUG_PRINTLN("IP address: ");
+  DEBUG_PRINTLN(WiFi.localIP());
 }
 
-void loop() {
+// here is where you'd put code that needs to be running all the time.
+void loop() { 
+  //every interval get the Data from the API and display it.
+  if (isIntervalDone()) { 
+    int apiResponse = getDataFromAPI(); 
+    if(apiResponse != -1){ //if the reponse was success full, display data
+      displayData(apiResponse);
+      digitalWrite(connectedToApiStatusLedPin, HIGH); //Turn LED on
+    } else {
+      digitalWrite(connectedToApiStatusLedPin, LOW);  //Turn LED off
+    } 
+  } 
+}
+boolean isIntervalDone(){
+  if (millis() - previousMillis >= interval) {
+    previousMillis = millis(); 
+    return true;
+  } else{
+    return false;
+  }
+}
 
-  // here is where you'd put code that needs to be running all the time.
-
-  // check to see if it's time to blink the LED; that is, if the difference
-  // between the current time and last time you blinked the LED is bigger than
-  // the interval at which you want to blink the LED.
-  unsigned long currentMillis = millis();
-
-  if (currentMillis - previousMillis >= interval) {
-    // save the last time you blinked the LED
-    previousMillis = currentMillis; 
-    notAbleToConnectToTheAPI = 0;
+int getDataFromAPI(){ 
     // Use WiFiClientSecure class to create TLS connection
     WiFiClientSecure client;
-    USE_SERIAL.print("connecting to ");
-    USE_SERIAL.println(host);
+    DEBUG_PRINT("connecting to ");
+    DEBUG_PRINTLN(host);
     if (!client.connect(host, httpsPort)) {
-      USE_SERIAL.println("connection failed");
-      notAbleToConnectToTheAPI = 1;
-      return;
-    }
-  
-    if (client.verify(fingerprint, host)) {
-      USE_SERIAL.println("certificate matches");
-    } else {
-      USE_SERIAL.println("certificate doesn't match");
+      DEBUG_PRINTLN("connection failed"); 
+      return -1;
     } 
-    
-    USE_SERIAL.print("requesting URL: ");
-    USE_SERIAL.println(url);
+    if (client.verify(fingerprint, host)) {
+      DEBUG_PRINTLN("certificate matches");
+    } else {
+      DEBUG_PRINTLN("certificate doesn't match");
+    }  
+    DEBUG_PRINT("requesting URL: ");
+    DEBUG_PRINTLN(url);
   
     client.print(String("GET ") + url + " HTTP/1.1\r\n" +
                  "Host: " + host + "\r\n" +
                  "User-Agent: ESP8266\r\n" +
                  "Connection: close\r\n\r\n"); 
                  
-    USE_SERIAL.println("request sent");
+    DEBUG_PRINTLN("request sent");
+    int counter = 0;
     while (client.connected()) {
+      counter++;
       String line = client.readStringUntil('\n');
       if (line == "\r") {
-        USE_SERIAL.println("headers received");
+        DEBUG_PRINTLN("headers received");
         break;
+      }
+      if(counter > 10000){
+        DEBUG_PRINTLN("Time out");
+        return -1;
       }
     }
     
-    String line = client.readStringUntil('\n'); 
-    
+    String line = client.readStringUntil('\n');  
     //now output HTML data header
     client.println("HTTP/1.1 204");
     client.println();
     client.println();
     delay(1);
     //stopping client
+    DEBUG_PRINTLN("closing connection");
     client.stop();
     int result = line.toInt();
-    USE_SERIAL.println("reply was:");
-    USE_SERIAL.println("==========");
-    USE_SERIAL.println(line); 
-    USE_SERIAL.println("==========");
-    USE_SERIAL.println("closing connection");
-    
-    //Turn off all leds
-     for(int i = 0; i < 5; i++){
-        digitalWrite(led[i], LOW); 
-     } 
+    return result; 
+}
+
+void displayData(int apiResponse){
+    int result = apiResponse;
+    DEBUG_PRINTLN("reply was:");
+    DEBUG_PRINTLN("==========");
+    DEBUG_PRINTLN(result); 
+    DEBUG_PRINTLN("=========="); 
+    //Turn off all status leds
+    for(int i = 0; i < (sizeof(ledPin)/sizeof(int)); i++){
+      digitalWrite(ledPin[i], LOW); 
+    } 
     if(result == 100000){
-      USE_SERIAL.println("Nothing to do");
+      DEBUG_PRINTLN("Nothing to do");
     } else {
       if( (result / 10000) % 10  == 1){
-        USE_SERIAL.println("1");
-        digitalWrite(led[0], HIGH);
+        DEBUG_PRINTLN("1");
+        digitalWrite(ledPin[0], HIGH);
       } 
       if( (result / 1000) % 10  == 1){
-        USE_SERIAL.println("2");
-        digitalWrite(led[1], HIGH);
+        DEBUG_PRINTLN("2");
+        digitalWrite(ledPin[1], HIGH);
       } 
       if( (result / 100) % 10  == 1){
-        USE_SERIAL.println("3");
-        digitalWrite(led[2], HIGH);
+        DEBUG_PRINTLN("3");
+        digitalWrite(ledPin[2], HIGH);
       } 
       if( (result / 10) % 10  == 1){
-        USE_SERIAL.println("4");
-        digitalWrite(led[3], HIGH);
+        DEBUG_PRINTLN("4");
+        digitalWrite(ledPin[3], HIGH);
       } 
       if( result % 10  == 1){
-        USE_SERIAL.println("5");
-        digitalWrite(led[4], HIGH);
+        DEBUG_PRINTLN("5");
+        digitalWrite(ledPin[4], HIGH);
       } 
     }
-    USE_SERIAL.flush();
-  }
-  digitalWrite(LED_BUILTIN, notAbleToConnectToTheAPI);
- 
+    #ifdef DEBUG
+      Serial.flush();
+    #endif
+   
 }
+
