@@ -19,12 +19,12 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 
-//#define DEBUG; //comment out to disable Serial prints
+#define DEBUG; //comment out to disable Serial prints
 
 #ifdef DEBUG 
- #define DEBUG_PRINT(x)       Serial.print    (x)
- #define DEBUG_PRINTDEC(x)    Serial.print    (x, DEC)
- #define DEBUG_PRINTLN(x)     Serial.println  (x)
+ #define DEBUG_PRINT(x)       Serial.print(x)
+ #define DEBUG_PRINTDEC(x)    Serial.print(x, DEC)
+ #define DEBUG_PRINTLN(x)     Serial.println(x)
 #else
  #define DEBUG_PRINT(x)
  #define DEBUG_PRINTDEC(x)
