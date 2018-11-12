@@ -14,6 +14,9 @@
 //
 void digitalClockDisplay();
 void printDigits(int digits);
+void showCalendar();
+void showCurrentEvents();
+void showCurrentEventForCircleId(int cirleID);
 
 
 // Define Functions below here or use other .ino or cpp files

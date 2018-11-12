@@ -19,7 +19,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 
-#define DEBUG; //comment out to disable Serial prints
+//#define DEBUG; //comment out to disable Serial prints
 
 #ifdef DEBUG 
  #define DEBUG_PRINT(x)       Serial.print(x)
@@ -36,7 +36,7 @@ const char* password = "ChristianPetri1988";
 
 const char* host = "www.collectioncalendar.christianpetri.ch";
 const int httpsPort = 443;
-String url = "/plaintext/?circle_id=5"; 
+String url = "/plaintext/?circle_id=5";
 
 // Use web browser to view and copy
 // SHA1 fingerprint of the certificate
@@ -45,7 +45,7 @@ const char* fingerprint = "da c9 02 4f 54 d8 f6 df 94 93 5f b1 73 26 38 ca 6a d7
 
 //Setup LED
 const int ledPin[5] = {D8, D0, D5, D6, D7}; 
-const int connectedToApiStatusLedPin = LED_BUILTIN; //on = successful off=not connected
+const int connectedToApiStatusLedPin = LED_BUILTIN; //on = HIGH = successful off = LOW = not connected
 
 // Generally, you should use "unsigned long" for variables that hold time
 // The value will quickly become too large for an int to store

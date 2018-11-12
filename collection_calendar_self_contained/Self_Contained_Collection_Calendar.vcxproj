@@ -111,7 +111,6 @@
     <ClInclude Include="__vm\.Self_Contained_Collection_Calendar.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Calendar.cpp" />
     <ClCompile Include="psydoCode.cpp" />
   </ItemGroup>
   <PropertyGroup>
