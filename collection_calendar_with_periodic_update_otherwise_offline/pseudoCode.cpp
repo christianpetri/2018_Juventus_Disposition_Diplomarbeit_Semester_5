@@ -6,7 +6,7 @@ String circleName[] = { "1", "1a", "1b", "2", "3", "4", "5", "6", "7", "8", "9",
 
 // The setup() function runs once each time the micro-controller starts 
 void setup(){
-	if (isWiFiCredentialsSet()){
+	if (!isWiFiCredentialsSet()){
 		goToSoftAPmode(); //the user has to enter their credentials
 	}
 	 connectToWifi();
@@ -21,7 +21,7 @@ void loop()
 		delay(1000); //Wait for a second
 	}
 	else {
-		goOnline()
+		goOnline();
 		getColletionCalendarData();
 		getCurrentUnixTime();
 		goOffline();
