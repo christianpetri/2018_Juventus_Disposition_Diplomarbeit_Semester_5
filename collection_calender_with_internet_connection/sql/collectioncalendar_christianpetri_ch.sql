@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.7
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql.collectioncalendar.christianpetri.ch
--- Generation Time: Sep 10, 2018 at 09:19 AM
--- Server version: 5.6.34-log
--- PHP Version: 7.1.17
+-- Erstellungszeit: 12. Nov 2018 um 01:31
+-- Server-Version: 5.6.34-log
+-- PHP-Version: 7.1.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `collectioncalendar_christianpetri_ch`
+-- Datenbank: `collectioncalendar_christianpetri_ch`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `circle`
+-- Tabellenstruktur für Tabelle `circle`
 --
 
 CREATE TABLE `circle` (
@@ -34,7 +34,7 @@ CREATE TABLE `circle` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `circle`
+-- Daten für Tabelle `circle`
 --
 
 INSERT INTO `circle` (`circle_id`, `circle_description`) VALUES
@@ -53,7 +53,7 @@ INSERT INTO `circle` (`circle_id`, `circle_description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `collection_calendar`
+-- Tabellenstruktur für Tabelle `collection_calendar`
 --
 
 CREATE TABLE `collection_calendar` (
@@ -64,11 +64,11 @@ CREATE TABLE `collection_calendar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `collection_calendar`
+-- Daten für Tabelle `collection_calendar`
 --
 
 INSERT INTO `collection_calendar` (`ID`, `collection_date`, `garbage_type_id`, `circle_id`) VALUES
-(1, '2018-09-10', 2, 10),
+(1, '2018-09-29', 2, 5),
 (2, '2018-09-10', 2, 7),
 (3, '2018-09-10', 2, 11),
 (4, '2018-09-11', 2, 8),
@@ -162,7 +162,7 @@ INSERT INTO `collection_calendar` (`ID`, `collection_date`, `garbage_type_id`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `garbage_type`
+-- Tabellenstruktur für Tabelle `garbage_type`
 --
 
 CREATE TABLE `garbage_type` (
@@ -171,52 +171,28 @@ CREATE TABLE `garbage_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `garbage_type`
+-- Daten für Tabelle `garbage_type`
 --
 
 INSERT INTO `garbage_type` (`garbage_type_id`, `garbage_type_description`) VALUES
 (1, 'Gruengut'),
-(2, 'Karton\r\n'),
+(2, 'Karton'),
 (3, 'Kehricht und Sperrgut'),
 (4, 'Metall'),
 (5, 'Papier');
 
--- --------------------------------------------------------
-
 --
--- Stand-in structure for view `Zeitfenster`
--- (See below for the actual view)
---
-CREATE TABLE `Zeitfenster` (
-`ID` int(11)
-,`collection_date` date
-,`garbage_type_id` int(11)
-,`circle_id` int(11)
-,`Name_exp_5` int(1)
-,`Name_exp_6` int(1)
-);
-
--- --------------------------------------------------------
-
---
--- Structure for view `Zeitfenster`
---
-DROP TABLE IF EXISTS `Zeitfenster`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`collectioncalend`@`66.33.192.0/255.255.224.0` SQL SECURITY DEFINER VIEW `Zeitfenster`  AS  select `collection_calendar`.`ID` AS `ID`,`collection_calendar`.`collection_date` AS `collection_date`,`collection_calendar`.`garbage_type_id` AS `garbage_type_id`,`collection_calendar`.`circle_id` AS `circle_id`,((`collection_calendar`.`collection_date` + interval 7 hour) > now()) AS `Name_exp_5`,((`collection_calendar`.`collection_date` + interval -(6) hour) < now()) AS `Name_exp_6` from `collection_calendar` ;
-
---
--- Indexes for dumped tables
+-- Indizes der exportierten Tabellen
 --
 
 --
--- Indexes for table `circle`
+-- Indizes für die Tabelle `circle`
 --
 ALTER TABLE `circle`
   ADD PRIMARY KEY (`circle_id`);
 
 --
--- Indexes for table `collection_calendar`
+-- Indizes für die Tabelle `collection_calendar`
 --
 ALTER TABLE `collection_calendar`
   ADD PRIMARY KEY (`ID`),
@@ -224,39 +200,39 @@ ALTER TABLE `collection_calendar`
   ADD KEY `circle_id` (`circle_id`);
 
 --
--- Indexes for table `garbage_type`
+-- Indizes für die Tabelle `garbage_type`
 --
 ALTER TABLE `garbage_type`
   ADD PRIMARY KEY (`garbage_type_id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT für exportierte Tabellen
 --
 
 --
--- AUTO_INCREMENT for table `circle`
+-- AUTO_INCREMENT für Tabelle `circle`
 --
 ALTER TABLE `circle`
   MODIFY `circle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `collection_calendar`
+-- AUTO_INCREMENT für Tabelle `collection_calendar`
 --
 ALTER TABLE `collection_calendar`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
--- AUTO_INCREMENT for table `garbage_type`
+-- AUTO_INCREMENT für Tabelle `garbage_type`
 --
 ALTER TABLE `garbage_type`
   MODIFY `garbage_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- Constraints for dumped tables
+-- Constraints der exportierten Tabellen
 --
 
 --
--- Constraints for table `collection_calendar`
+-- Constraints der Tabelle `collection_calendar`
 --
 ALTER TABLE `collection_calendar`
   ADD CONSTRAINT `collection_calendar_ibfk_1` FOREIGN KEY (`garbage_type_id`) REFERENCES `garbage_type` (`garbage_type_id`),
