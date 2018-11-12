@@ -1,4 +1,4 @@
-# 2018_Juventus_Disposition_Diplomarbeit_Semester_5
+# 2018 Juventus Disposition Vorstudie Semester_5
 
 * [Kalender Anzeige ohne Internet.](collection_calendar_self_contained/)  
  Soweit ausprogrammiert --> Das RTC Modul und das externe einstellen der Uhrzeit und Datum ist noch nicht implementiert.  
