@@ -25,7 +25,7 @@ void showCurrentEventForCircleId(int cirleID);
 
 #include <TimeLib.h>
 #include <Time.h>
-int colletionDate[][3] = {
+int collectionDate[][3] = {
 		{ 1536537600,2,10 },
 		{ 1536537600,2,7 },
 		{ 1536537600,2,11 },
@@ -165,12 +165,12 @@ void printDigits(int digits) {
 }
 
 void showCalendar() {
-	for (int i = 0; i < sizeof(colletionDate) / sizeof(colletionDate[0]); i++) {
-		Serial.printf("\nindex %d\n date: %d", i, colletionDate[i][0]);
+	for (int i = 0; i < sizeof(collectionDate) / sizeof(collectionDate[0]); i++) {
+		Serial.printf("\nindex %d\n date: %d", i, collectionDate[i][0]);
 		Serial.print(" type: ");
-		Serial.print(typeName[colletionDate[i][1] - 1]);
+		Serial.print(typeName[collectionDate[i][1] - 1]);
 		Serial.print(" circle: ");
-		Serial.print(circleName[colletionDate[i][2] - 1]);
+		Serial.print(circleName[collectionDate[i][2] - 1]);
 	}
 }
 
@@ -179,13 +179,13 @@ void showCurrentEvents() {
 	Serial.println("showCurrentEvents");
 	
  
-	for (int i = 0; i < sizeof(colletionDate) / sizeof(colletionDate[0]); i++) {
-		if (colletionDate[i][0] + 7 * 60 * 60 >= now() && colletionDate[i][0] - 6 * 60 * 60 <= now()) {
-			Serial.printf("\nindex %d date: %d\t", i, colletionDate[i][0]);
+	for (int i = 0; i < sizeof(collectionDate) / sizeof(collectionDate[0]); i++) {
+		if (collectionDate[i][0] + 7 * 60 * 60 >= now() && collectionDate[i][0] - 6 * 60 * 60 <= now()) {
+			Serial.printf("\nindex %d date: %d\t", i, collectionDate[i][0]);
 			Serial.print(" type: ");
-			Serial.print(typeName[colletionDate[i][1] - 1]);
+			Serial.print(typeName[collectionDate[i][1] - 1]);
 			Serial.print(" circle: ");
-			Serial.print(circleName[colletionDate[i][2] - 1]);
+			Serial.print(circleName[collectionDate[i][2] - 1]);
 		}
 	}
 	Serial.println("------");
@@ -195,14 +195,14 @@ void showCurrentEventForCircleId(int cirleID) {
 	Serial.println("");
 	Serial.print("showCurrentEventForCircleId ");
 	Serial.print(cirleID);
-	for (int i = 0; i < sizeof(colletionDate) / sizeof(colletionDate[0]); i++) {
-		if (colletionDate[i][2] == cirleID) {
-			if (colletionDate[i][0] + 7 * 60 * 60 >= now() && colletionDate[i][0] - 6 * 60 * 60 <= now()) { 
-				Serial.printf("\nindex %d date: %d\t", i, colletionDate[i][0]);
+	for (int i = 0; i < sizeof(collectionDate) / sizeof(collectionDate[0]); i++) {
+		if (collectionDate[i][2] == cirleID) {
+			if (collectionDate[i][0] + 7 * 60 * 60 >= now() && collectionDate[i][0] - 6 * 60 * 60 <= now()) { 
+				Serial.printf("\nindex %d date: %d\t", i, collectionDate[i][0]);
 				Serial.print(" type: ");
-				Serial.print(typeName[colletionDate[i][1] - 1]);
+				Serial.print(typeName[collectionDate[i][1] - 1]);
 				Serial.print(" circle: ");
-				Serial.print(circleName[colletionDate[i][2] - 1]);
+				Serial.print(circleName[collectionDate[i][2] - 1]);
 			}
 		} 
 	}

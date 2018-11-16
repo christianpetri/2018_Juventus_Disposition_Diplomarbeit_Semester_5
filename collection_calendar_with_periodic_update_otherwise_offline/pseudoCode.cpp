@@ -1,5 +1,5 @@
 //Libary Stuff
-int colletionDate[][3] = { }; //{Date in Unix, garbageTypeId, circleId}
+int collectionDate[][3] = { }; //{Date in Unix, garbageTypeId, circleId}
 String typeName[] =
 { "Grüngut", "Karton", "Kehricht und Sperrgut", "Metall", "Papier" };
 String circleName[] = { "1", "1a", "1b", "2", "3", "4", "5", "6", "7", "8", "9", };
@@ -38,4 +38,3 @@ void goOnline() { ... }
 void getColletionCalendarData() { ... }
 void getCurrentUnixTime() { ... }
 void goOffline() { ... }
-
