@@ -33,9 +33,10 @@
    </head>
 <body>
       <h1>Collection Calendar</h1>
+      <p><a href='/doc'>Doc: How to use for your own project</a></p>
 	  <h2>Next 30 Dates</h2>
 
-<?php 
+<?php
     $result = $DB->getCalendarEntries();
 
    //echo print_r($result);
