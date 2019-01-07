@@ -41,7 +41,7 @@ String url = "/plaintext/?circle_id=5";
 // Use web browser to view and copy
 // SHA1 fingerprint of the certificate
 //const char* fingerprint = "8e 99 24 7e 5f 65 42 c4 ac 5c 9a ec 1c 15 83 5b f2 d4 5b 78";
-const char* fingerprint = "da c9 02 4f 54 d8 f6 df 94 93 5f b1 73 26 38 ca 6a d7 7c 13"; //root certificate --> until 2021
+const char* fingerprint = "667704f733ffeb079014ab4121e85d2ef1288fc6"; //certificate --> until 21.02.2019
 
 //Setup LED
 const int ledPin[5] = {D8, D0, D5, D6, D7}; 

@@ -1,47 +1,45 @@
-<?php
- 	 date_default_timezone_set('Europe/London');
-
-?>
 <html lang="en">
-   <head>
-      <title>Collection Calendar</title>
-       <style type="text/css">
-           html{
-               background-color:black;
-           }
-           body{
-               padding: 20px;
-               max-width: 1000px;
-               margin:auto;
-               background-color: white;
-           }
+<head>
+    <title>Collection Calendar</title>
+    <style type="text/css">
+        html {
+            background-color: black;
+        }
 
-            table.result {
-                border-collapse: collapse;
-            }
+        body {
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+            background-color: white;
+        }
 
-            table.result th {
-                border: 1px solid black;
-                padding: 5px;
-            }
-           table.result td{
-                border: 1px solid black;
-                padding: 5px;
-            }
+        table.result {
+            border-collapse: collapse;
+        }
 
-       </style>
-   </head>
+        table.result th {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        table.result td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+    </style>
+</head>
 <body>
-  <h1>collectioncalendar doc</h1>
+<h1>collectioncalendar doc</h1>
 
-  The application has /plaintext and /json as an API option
+The application has /plaintext and /json as an API option
 
-  <table>
+<table>
     <thead>
-      <tr>
-          <td>circle_id</td>
-          <td>circle_description</td>
-      </tr>
+    <tr>
+        <td>circle_id</td>
+        <td>circle_description</td>
+    </tr>
     </thead>
     <tbody>
     <tr>
@@ -88,38 +86,33 @@
         <td>11</td>
         <td>9</td>
     </tr>
-  </table>
+</table>
 <h2>How to use /plaintext</h2>
-  <p>Request URL: https://www.collectioncalendar.christianpetri.ch/plaintext/?circle_id=6<br/>
-  Request Method: GET</p>
+<p>Request URL: https://www.collectioncalendar.christianpetri.ch/plaintext/?circle_id=6<br/>
+    Request Method: GET</p>
 
-  <p>Respondse: 100100</p>
-  <p>The first number is always 1 which is followed by 5 numbers which represent a boolean</p>
-  <p> 1 = true, 0 = false  // 1 = led is ON , 0 = led is OFF</p>
-  100100 --> <br/>
-  [1][0][0][1][0][0] <br/>
-  [1] ["Grüngut"] ["Karton"] ["Kehricht und Sperrgut"] ["Metall"] ["Papier"]
-  <p>The first number represents nothing, it is a placeholder to start the sequence</p>
-  <p>The second number represents green waste</p>
-  <p>The third number represents cardboard</p>
-  <p>The fourth number represents general waste and "bulky goods"</p>
-  <p>The fifth number represents metal waste</p>
-  <p>The sixed number represents paper waste</p>
+<p>Respondse: 100100</p>
+<p>The first number is always 1 which is followed by 5 numbers which represent a boolean</p>
+<p> 1 = true, 0 = false // 1 = led is ON , 0 = led is OFF</p>
+100100 --> <br/>
+[1][0][0][1][0][0] <br/>
+[1] ["Grüngut"] ["Karton"] ["Kehricht und Sperrgut"] ["Metall"] ["Papier"]
+<p>The first number represents nothing, it is a placeholder to start the sequence</p>
+<p>The second number represents green waste</p>
+<p>The third number represents cardboard</p>
+<p>The fourth number represents general waste and "bulky goods"</p>
+<p>The fifth number represents metal waste</p>
+<p>The sixed number represents paper waste</p>
 
-  isGreenRecyclingToday = false --> Light is off<br/>
-  isCardboardRecyclingToday = flase --> Light is off<br/>
-  isGeneralWasteRecyclingToday = true --> Light is on<br/>
-  and so on
+isGreenRecyclingToday = false --> Light is off<br/>
+isCardboardRecyclingToday = flase --> Light is off<br/>
+isGeneralWasteRecyclingToday = true --> Light is on<br/>
+and so on
 <h2> How to use json</h2>
 <p>Request URL: https://www.collectioncalendar.christianpetri.ch/json/?circle_id=6<br/>
-Request Method: GET</p>
+    Request Method: GET</p>
 
 
 <p>Respondse: [{"collection_date":"2018-09-12","garbage_type_id":"2","garbage_type_description":"Karton"}]</p>
-
-  </body>
-
-
-
-
+</body>
 </html>

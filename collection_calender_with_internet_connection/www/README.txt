@@ -1,1 +1,0 @@
-place the .ini file into your root folder (one below the public folder) and fill in your creds.

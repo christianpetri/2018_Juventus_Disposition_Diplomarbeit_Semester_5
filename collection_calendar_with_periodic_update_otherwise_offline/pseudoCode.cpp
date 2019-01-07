@@ -1,10 +1,10 @@
 //Libary Stuff
 int collectionDate[][3] = { }; //{Date in Unix, garbageTypeId, circleId}
 String typeName[] =
-{ "Grüngut", "Karton", "Kehricht und Sperrgut", "Metall", "Papier" };
+{ "GrÃ¼ngut", "Karton", "Kehricht und Sperrgut", "Metall", "Papier" };
 String circleName[] = { "1", "1a", "1b", "2", "3", "4", "5", "6", "7", "8", "9", };
 
-// The setup() function runs once each time the micro-controller starts 
+// The setup() function runs once each time the micro-controller starts
 void setup(){
 	if (!isWiFiCredentialsSet()){
 		goToSoftAPmode(); //the user has to enter their credentials
@@ -17,7 +17,7 @@ void loop()
 {
 	if (isCalendarStillUpdate()) {
 		digitalClockDisplay();
-		showCurrentEventForCircleId(«User_Set_Cirle_ID»);
+		showCurrentEventForCircleId(ï¿½User_Set_Cirle_IDï¿½);
 		delay(1000); //Wait for a second
 	}
 	else {
@@ -25,9 +25,9 @@ void loop()
 		getColletionCalendarData();
 		getCurrentUnixTime();
 		goOffline();
-	} 
+	}
 }
- 
+
 void connectToWifi(){ ... }
 boolean isWiFiCredentialsSet(){ ... }
 void goToSoftAPmode(){ ... }
